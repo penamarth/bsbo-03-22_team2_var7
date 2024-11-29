@@ -1,0 +1,12 @@
+@startuml
+actor Worker
+entity System
+entity Task
+
+Worker -> System : Войти в систему
+System -> Worker : Успешный вход
+Worker -> Task : Просмотреть задание
+Task -> System : Запросить задание
+System -> Task : Возвращение задания
+System -> Worker : Отобразить задание
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+actor Manager
+entity System
+entity Task
+
+Manager -> System : Войти в систему
+System -> Manager : Успешный вход
+Manager -> Task : Просмотреть статус задания
+Task -> System : Запросить статус
+System -> Task : Возвращение статуса задания
+System -> Manager : Отобразить статус задания
+@enduml

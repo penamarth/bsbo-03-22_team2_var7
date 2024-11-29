@@ -1,0 +1,11 @@
+@startuml
+actor Manager
+entity System
+entity Task
+
+Manager -> System : Войти в систему
+System -> Manager : Успешный вход
+Manager -> Task : Создать новое задание
+Task -> System : Сохранить задание
+System -> Manager : Подтвердить создание задания
+@enduml

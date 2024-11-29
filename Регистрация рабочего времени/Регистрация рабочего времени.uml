@@ -1,0 +1,14 @@
+@startuml
+actor Worker
+entity System
+entity TimeEntry
+entity Task
+
+Worker -> System : Войти в систему
+System -> Worker : Успешный вход
+Worker -> Task : Выбрать задание
+Task -> Worker : Отобразить задание
+Worker -> TimeEntry : Ввести время начала и конца
+TimeEntry -> System : Сохранить запись времени
+System -> Worker : Подтвердить сохранение записи
+@enduml
