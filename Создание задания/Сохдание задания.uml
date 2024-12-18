@@ -1,11 +1,11 @@
 @startuml
-actor Manager
+actor Director
 entity System
 entity Task
 
-Manager -> System : Войти в систему
-System -> Manager : Успешный вход
-Manager -> Task : Создать новое задание
-Task -> System : Сохранить задание
-System -> Manager : Подтвердить создание задания
+Director -> System : Войти в систему
+System -> Director : Успешный вход
+Director -> Task : Создать новую таску
+Task -> System : Сохранить таску
+System -> Director : Подтвердить создание таски
 @enduml
