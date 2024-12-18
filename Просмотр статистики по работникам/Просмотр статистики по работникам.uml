@@ -1,0 +1,13 @@
+@startuml
+actor Director
+entity System
+entity Employee
+
+Director -> System : Войти в систему
+System -> Director : Успешный вход
+Director -> System : Запросить статистику по работникам
+System -> Employee : Получить данные о работниках
+Employee -> System : Данные о работниках
+System -> System : Обработать и агрегировать данные
+System -> Director : Отобразить статистику по работникам
+@enduml

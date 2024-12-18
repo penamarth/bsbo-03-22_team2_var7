@@ -1,0 +1,12 @@
+@startuml
+actor Employer
+entity System
+entity Task
+
+Employer -> System : Войти в систему
+System -> Employer : Успешный вход
+Employer -> Task : Изменить статус задания
+Task -> System : Обновить статус задания
+System -> Task : Новый статус задания
+System -> Employer : Подтверждение изменения статуса
+@enduml

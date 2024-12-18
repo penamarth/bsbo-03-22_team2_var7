@@ -2,83 +2,105 @@
 @startuml
 
 package models {
-  class Task {
-    - id: int
-    - description: String
-    - status: String
-    - assigned_to: User
-    + createTask(): void
-    + updateStatus(): void
-    + assignToUser(): void
-  }
 
-  class User {
-    - id: int
-    - name: String
-    - role: String
-    + login(): void
-    + logout(): void
-    + viewTasks(): void
-  }
+    ' Абстрактный класс состояния
+    abstract class State {
+        + ChangeState(id: int): State
+    }
 
-  class TimeEntry {
-    - id: int
-    - task_id: int
-    - user_id: int
-    - start_time: DateTime
-    - end_time: DateTime
-    - duration: int
-    + createEntry(): void
-    + editEntry(): void
-    + viewEntries(): void
-  }
+    ' Конкретные классы состояний
+    class State1 {
+        + ChangeState(id: int): State
+    }
+
+    class State2 {
+        + ChangeState(id: int): State
+    }
+
+    class State3 {
+        + ChangeState(id: int): State
+    }
+
+    ' Класс задачи
+    class Task {
+        - id: int
+        - description: String
+        - status: String
+        - assigned_to: Employer
+        - date_of_creation: Date
+        - planned_date_of_end: Date
+        - actual_date_of_end: Date
+        - director: Director
+        + CreateTask(description: String, creationDate: String, plannedCompletionDate: String, 
+                    actualCompletionDate: String, executor: String, status: String, directorName: String): Task
+        + DeleteTask(id: int): void
+        + ChangeStatus(id: int, directorName: String): void
+        + ChangeCurrentState(id: int): void
+    }
+
+    ' Класс директора
+    class Director {
+        - id: int
+        - FIO: String
+        + CreateTask(): void
+        + DeleteTask(): void
+        + ChangeStatus(): void
+        + ViewStatistics(parameter: String = "Executor"): void
+    }
+
+    ' Класс работодателя
+    class Employer {
+        - id: int
+        - FIO: String
+        - directorName: String
+        - system: MySystem
+        + CreateTask(): void
+        + DeleteTask(): void
+        + ChangeStatus(): void
+        + ViewStatistics(parameter: String = "Executor"): void
+    }
+
+    ' Класс системы
+    class MySystem {
+        - director: Director
+        - employers: List<Employer>
+        - tasks: List<Task>
+        + CreateDirector(fullName: String, position: String): void
+        + CreateEmployer(fullName: String, position: String, directorName: String): void
+        + CreateTask(description: String, creationDate: String, plannedCompletionDate: String, 
+                    actualCompletionDate: String, executor: String, status: String, directorName: String): void
+        + DeleteTask(id: int): void
+        + ChangeStatusByDirector(id: int, directorName: String): void
+        + ChangeStatusByEmployer(id: int, employerName: String): void
+        + ViewStatistics(parameter: String, flag: bool, id: int): void
+    }
+
+    ' Класс программы
+    class Program {
+        + Main(): void
+    }
+
+    ' Наследование
+    State <|-- State1
+    State <|-- State2
+    State <|-- State3
+
+    ' Ассоциации и Агрегации
+    MySystem "1" o-- "1" Director : содержит
+    MySystem "1" o-- "*" Employer : содержит
+    MySystem "1" o-- "*" Task : содержит
+
+    Task "1" --> "1" Employer : назначен
+    Task "1" --> "1" Director : контролируется
+
+    Employer "1" --> "1" Director : слабая_зависимость
+
+    Task "1" *-- "1" State : текущий_статус
+
+    Program ..> MySystem : использует
+
 }
-
-package reports {
-  class Report {
-    - id: int
-    - user_id: int
-    - task_id: int
-    - total_time: int
-    + generateReport(): void
-    + viewReport(): void
-  }
-}
-
-package services {
-  class TaskService {
-    + createTask(): void
-    + updateStatus(): void
-  }
-  class TimeEntryService {
-    + createEntry(): void
-    + generateReport(): void
-  }
-}
-
-' Relationships
-Task --> User : assigns
-TimeEntry --> Task : aggregates
-TimeEntry --> User : aggregates
-Report --> Task : depends
-Report --> User : depends
 
 @enduml
+
 ```
-
-
-**Task** (Задание): хранит информацию о задании, статусе и пользователе, которому оно назначено.
-- **User** (Пользователь): хранит информацию о пользователях (менеджерах, исполнителях), их ролях и задачах.
-- **TimeEntry** (Запись времени): хранит данные о времени, затраченном на выполнение задания.
-- **Report** (Отчет): генерирует отчет о времени, затраченном на задания, для конкретного пользователя.
-- **TaskService** и **TimeEntryService**: сервисы для работы с задачами и временем.
-
-
-
-##### Связи между классами:
-- **Task** зависит от **User**: задание связано с пользователем (оно назначается конкретному пользователю).
-- **TimeEntry** агрегирует **Task** и **User**: каждая запись времени связана с конкретной задачей и пользователем.
-- **Report** зависит от **Task** и **User**: отчет формируется для задания и пользователя.
-
-
-
