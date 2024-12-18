@@ -1,0 +1,15 @@
+@startuml
+actor Director
+entity Employer
+entity System
+entity Task
+
+Director -> System : Войти в систему
+System -> Director : Успешный вход
+Director -> System : Выбрать задачу для назначения
+System -> Director : Показать список доступных задач
+Director -> Employer : Выбрать исполнителя
+Director -> System : Назначить исполнителя на задачу
+System -> Task : Обновить задачу с исполнителем
+System -> Director : Подтверждение назначения исполнителя
+@enduml
